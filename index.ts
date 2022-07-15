@@ -1,29 +1,9 @@
 import csv from "csvtojson";
 
 import latencies from "./latencies.json";
-
+import { CountryCode, Transaction, FraudCheckedTransaction } from "./common/types";
+import { prioritize } from "./common/prioritize";
 const TRANSACTION_PATH = __dirname + "/transactions.csv";
-
-interface Transaction {
-  id: string;
-  amount: number;
-  bank_country_code: string;
-}
-
-interface FraudCheckedTransaction {
-  id: string;
-  fraudulent: boolean;
-}
-
-async function prioritize(
-  transactions: Array<Transaction>,
-  totalTime: number = 1000
-): Promise<Array<Transaction>> {
-  totalTime = totalTime < 0 || totalTime > 1000 ? 1000 : totalTime;
-  console.log("Total Time:", totalTime);
-
-  return [];
-}
 
 function processTransaction(transaction: Transaction): boolean {
   return true;
@@ -40,15 +20,16 @@ function processTransactions(
     });
   }
 
-  console.log("Result:", results);
-
   return results;
 }
 
 async function main() {
-  const transactions: Array<Transaction> = await csv().fromFile(
-    TRANSACTION_PATH
-  );
+  const transactions: Array<Transaction> = (
+    await csv().fromFile(TRANSACTION_PATH)
+  ).map((t) => ({
+    ...t,
+    latency: latencies[t.bank_country_code as CountryCode] as number,
+  }));
 
   const priorTransactions: Array<Transaction> = await prioritize(transactions);
 
