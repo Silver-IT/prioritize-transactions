@@ -6,6 +6,8 @@ export async function prioritize(
 ): Promise<PrioriMemo> {
   totalTime = totalTime < 0 || totalTime > 1000 ? 1000 : totalTime;
   console.log("Total Time:", totalTime);
+  console.log("Time Complexity: O(transactions.length * totalTime) =", transactions.length * totalTime);
+  console.log("Space Complexity: O(transactions.length * totalTime) =", transactions.length * totalTime);
 
   const memo: Array<Array<PrioriMemo>> = [];
 
@@ -39,7 +41,7 @@ export async function prioritize(
       // copy the transactions of the last sub-problem solution
       const lastTransactions = lastSubSolution.transactions.slice();
       lastTransactions.push(lastTransaction);
-      return { maxAmount: newAmount, transactions: lastTransactions };
+      return { maxAmount: parseFloat(newAmount.toFixed(2)), transactions: lastTransactions };
     } else {
       return lastSolution;
     }
