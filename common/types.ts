@@ -55,3 +55,8 @@ export interface FraudCheckedTransaction {
   id: string;
   fraudulent: boolean;
 }
+
+export interface PrioriMemo {
+  maxAmount: number;
+  transactions: Array<Transaction>;
+}

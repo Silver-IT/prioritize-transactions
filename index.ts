@@ -1,7 +1,7 @@
 import csv from "csvtojson";
 
 import latencies from "./latencies.json";
-import { CountryCode, Transaction, FraudCheckedTransaction } from "./common/types";
+import { CountryCode, Transaction, FraudCheckedTransaction, PrioriMemo } from "./common/types";
 import { prioritize } from "./common/prioritize";
 const TRANSACTION_PATH = __dirname + "/transactions.csv";
 
@@ -28,12 +28,15 @@ async function main() {
     await csv().fromFile(TRANSACTION_PATH)
   ).map((t) => ({
     ...t,
+    amount: parseFloat(t.amount),
     latency: latencies[t.bank_country_code as CountryCode] as number,
   }));
 
-  const priorTransactions: Array<Transaction> = await prioritize(transactions);
+  const priorObj: PrioriMemo = await prioritize(transactions);
 
-  processTransactions(priorTransactions);
+  console.log(priorObj);
+
+  processTransactions(priorObj.transactions);
 }
 
 main();
