@@ -13,9 +13,9 @@ export async function prioritize(
     const NO_SOLUTION: PrioriMemo = { maxAmount: 0, transactions: [] };
     // the column number starts from zero.
     const col = cap - 1;
-    const lastItem = transactions[row];
-    // The remaining totalTime for the sub-problem to solve.
-    const remaining = cap - lastItem.latency;
+    const lastTransaction = transactions[row];
+    // The remaining latency for the sub-problem to solve.
+    const remaining = cap - lastTransaction.latency;
 
     // Refer to the last solution for this totalTime,
     // which is in the cell of the previous row with the same column
@@ -32,14 +32,14 @@ export async function prioritize(
     }
 
     // Compare the current best solution for the sub-problem with a specific totalTime
-    // to a new solution trial with the lastItem(new item) added
+    // to a new solution trial with the lastTransaction added
 
-    const newValue = lastSubSolution.maxAmount + lastItem.amount;
-    if (newValue >= lastSolution.maxAmount) {
+    const newAmount = lastSubSolution.maxAmount + lastTransaction.amount;
+    if (newAmount >= lastSolution.maxAmount) {
       // copy the transactions of the last sub-problem solution
       const lastTransactions = lastSubSolution.transactions.slice();
-      lastTransactions.push(lastItem);
-      return { maxAmount: newValue, transactions: lastTransactions };
+      lastTransactions.push(lastTransaction);
+      return { maxAmount: newAmount, transactions: lastTransactions };
     } else {
       return lastSolution;
     }
