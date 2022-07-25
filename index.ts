@@ -32,9 +32,9 @@ async function main() {
     latency: latencies[t.bank_country_code as CountryCode] as number,
   }));
 
+  const startedAt = Date.now();
   const priorObj: PrioriMemo = await prioritize(transactions);
-
-  console.log(priorObj);
+  console.log('Elapsted time:', Math.ceil(Date.now() - startedAt), 'ms');
 
   processTransactions(priorObj.transactions);
 }
