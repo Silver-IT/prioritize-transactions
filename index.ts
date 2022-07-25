@@ -32,11 +32,20 @@ async function main() {
     latency: latencies[t.bank_country_code as CountryCode] as number,
   }));
 
-  const startedAt = Date.now();
-  const priorObj: PrioriMemo = await prioritize(transactions);
-  console.log('Elapsted time:', Math.ceil(Date.now() - startedAt), 'ms');
+  // const priorObj_50: PrioriMemo = await prioritize(transactions, 50);
+  // processTransactions(priorObj_50.transactions);
+  // const priorObj_60: PrioriMemo = await prioritize(transactions, 60);
+  // processTransactions(priorObj_60.transactions);
+  // const priorObj_90: PrioriMemo = await prioritize(transactions, 90);
+  // processTransactions(priorObj_90.transactions);
+  const priorObj_1000: PrioriMemo = await prioritize(transactions);
+  processTransactions(priorObj_1000.transactions);
 
-  processTransactions(priorObj.transactions);
+  console.log("Total Time\tUSD Value");
+  // console.log("50\t\t", priorObj_50.maxAmount);
+  // console.log("60\t\t", priorObj_60.maxAmount);
+  // console.log("90\t\t", priorObj_90.maxAmount);
+  console.log("1000\t\t", priorObj_1000.maxAmount);
 }
 
 main();
