@@ -1,4 +1,5 @@
 The following JSON file is the result we get after running this project.
+It could be different to take running in different devices, but in my computer, it takes `500ms` to prioritize.
 ```js
 {
   maxAmount: 35471.81,
